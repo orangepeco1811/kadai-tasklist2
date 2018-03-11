@@ -6,5 +6,6 @@ class Micropost < ApplicationRecord
   
   has_many :favorites
   has_many :favers, through: :favorites, source: :user
+  has_many :favorites , dependent: :destroy
 
 end
