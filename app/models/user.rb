@@ -6,5 +6,25 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   has_secure_password
 
-  has_many :microposts
+
+has_many :microposts
+has_many :favorites
+has_many :favings, through: :favorites, source: :micropost
+  
+  def fav(other_user)
+    unless self == other_user
+      self.favorites.find_or_create_by(micropost_id: other_user.id)
+    end
+  end
+
+  def unfav(other_user)
+    favorite = self.favorites.find_by(micropost_id: other_user.id)
+    favorite.destroy if favorite
+  end
+
+  def faving?(micropost)
+    self.favings.include?(micropost)
+  end
+
+  
 end

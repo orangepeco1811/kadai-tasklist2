@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  get 'microposts/create'
-
-  get 'microposts/destroy'
 
   root to: 'toppages#index'
 
@@ -10,7 +7,15 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
 
   get 'signup', to: 'users#new'
-  resources :users, only: [:index, :show, :new, :create]
-
+  resources :users, only: [:index, :show, :new, :create] do
+    member do
+      get :favings
+      get :favers
+      get :favall
+    end
+  end
+  
   resources :microposts, only: [:create, :destroy]
+  resources :favorites, only: [:create, :destroy]
+
 end
